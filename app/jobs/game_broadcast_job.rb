@@ -7,6 +7,7 @@ class GameBroadcastJob < ApplicationJob
     # GameChannel.broadcast_to Game.find(@this_turn.game_id), render_play_selections_for(@this_turn)
     #
     # Basic version, just triggering page reload:
+    puts "Running game broadcast job"
     GameChannel.broadcast_to Game.find(game_id), {}
   end
 

@@ -18,6 +18,7 @@ if (window.location.pathname.match(/^\/games\/(\d+)/)) {
     },
 
     received(data) {
+      console.log("Manual refresh for new data");
       // Called when there's incoming data on the websocket for this channel
 
       // Same action as /app/views/games/play.js.erb
