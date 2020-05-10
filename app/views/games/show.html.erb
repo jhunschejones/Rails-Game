@@ -16,7 +16,7 @@
   </div>
   <hr/>
   <div class="game-footer">
-    <% if @this_turn.completed? %>
+    <% if @this_turn && @this_turn.completed? %>
       <% if current_user == @game.next_player %>
         <%= link_to("Go!", play_game_path(@game), class: "button is-primary footer-item", remote: true) %>
       <% elsif current_user == @game.current_player %>
@@ -24,7 +24,7 @@
       <% else %>
         <button class="button is-success footer-item" disabled>Confirm action completed</button>
       <% end %>
-    <% else %>
+    <% elsif @this_turn %>
       <% if current_user == @game.current_player %>
         <div class="title is-4 has-text-primary footer-item your-turn">Your turn!</div>
       <% elsif current_user.has_confirmed(@this_turn) %>
@@ -33,6 +33,5 @@
         <%= link_to("Confirm action completed", confirm_action_completed_path(@game), class: "button is-success footer-item", remote: true, method: :post) %>
       <% end %>
     <% end %>
-
   </div>
 </div>
