@@ -18,6 +18,6 @@
   <%= link_to("Change Order", edit_game_user_game_path(@game, user.user_game_for(@game)), class: "has-text-link") %>
   <% if user.id != current_user.id %>
     <strong class="resource-action-divider has-text-link">|</strong>
-    <%= link_to("Delete", game_remove_user_path(@game, user), method: :delete, remote: :true, class: "has-text-link", data: { confirm: "Are you sure you want to remove '#{user.name}' from this game? This action is permanent." }) %>
+    <%= link_to("Delete", game_remove_user_path(@game, user), method: :delete, remote: :true, class: "has-text-link", data: { confirm: "Are you sure you want to remove '#{user.name}' from this game? This action is permanent and will re-start your game." }) %>
   <% end %>
 </li>

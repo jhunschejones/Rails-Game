@@ -54,6 +54,7 @@ class UsersController < ApplicationController
     return redirect_to game_users_path(@game), notice: "Player is not in this game" unless @user_game
 
     @user_game.destroy!
+    Turn.where(game: @game).destroy_all
     respond_to(&:js)
   end
 

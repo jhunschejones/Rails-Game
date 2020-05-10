@@ -20,6 +20,7 @@ class CategoriesController < ApplicationController
       order = last_category_order.nil? ? 1 : last_category_order + 1
       Category.create!(categories_params.merge({game_id: @game.id, order: order}))
       @game.reload
+      Turn.where(game: @game).destroy_all
       respond_to(&:js)
     end
   rescue ActiveRecord::RecordInvalid => e
@@ -36,6 +37,7 @@ class CategoriesController < ApplicationController
   def destroy
     respond_to do |format|
       if @category.destroy
+        Turn.where(game: @game).destroy_all
         format.js
       else
         format.js

@@ -6,5 +6,5 @@
   <strong class="resource-action-divider has-text-link">|</strong>
   <%= link_to("Edit", edit_game_category_path(@game, category), class: "has-text-link") %>
   <strong class="resource-action-divider has-text-link">|</strong>
-  <%= link_to("Delete", game_category_path(@game, category), method: :delete, remote: :true, class: "has-text-link", data: { confirm: "Are you sure you want to delete '#{category.title}'? This action is permanent." }) %>
+  <%= link_to("Delete", game_category_path(@game, category), method: :delete, remote: :true, class: "has-text-link", data: { confirm: "Are you sure you want to delete '#{category.title}'? This action is permanent and will re-start your game." }) %>
 </li>

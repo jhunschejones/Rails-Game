@@ -5,6 +5,7 @@ class OptionsController < ApplicationController
 
   def create
     @option = Option.create!(options_params.merge({category_id: @category.id}))
+    Turn.where(game: @game).destroy_all
     respond_to(&:js)
   rescue ActiveRecord::RecordInvalid => e
     redirect_to edit_game_category_path(@game, @category), notice: e.message.split(": ")[1]
@@ -13,6 +14,7 @@ class OptionsController < ApplicationController
   def destroy
     @option = Option.find(params[:id])
     @option.destroy!
+    Turn.where(game: @game).destroy_all
     respond_to(&:js)
   end
 

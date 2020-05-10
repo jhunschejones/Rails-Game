@@ -2,5 +2,5 @@
   <span class="resource-title"><%= option.description %></span>
 
   <strong class="resource-action-divider has-text-link">|</strong>
-  <%= link_to("Delete", game_category_option_path(@game, option.category, option), method: :delete, remote: :true, class: "has-text-link", data: { confirm: "Are you sure you want to delete '#{option.description}'? This action is permanent." }) %>
+  <%= link_to("Delete", game_category_option_path(@game, option.category, option), method: :delete, remote: :true, class: "has-text-link", data: { confirm: "Are you sure you want to delete '#{option.description}'? This action is permanent and will re-start your game." }) %>
 </li>
