@@ -7,6 +7,7 @@
     "@rails/activestorage": "^6.0.0",
     "@rails/ujs": "^6.0.0",
     "@rails/webpacker": "^5.0.1",
+    "@babel/preset-typescript": "^7.9.0",
     "prop-types": "^15.7.2",
     "trix": "^1.2.0",
     "ts-loader": "^7.0.3",
@@ -15,7 +16,6 @@
   },
   "version": "0.1.0",
   "devDependencies": {
-    "@babel/preset-typescript": "^7.9.0",
     "prettier": "^2.0.4",
     "tslint": "^6.1.1",
     "tslint-config-prettier": "^1.18.0",
