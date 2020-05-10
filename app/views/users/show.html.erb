@@ -1,0 +1,26 @@
+<div class="user-details">
+  <h1 class="title is-4 user-title">My account</h1>
+  <p>
+    <span class="icon is-small is-left">
+      <i class="fas fa-hand-peace"></i>
+    </span>
+    <span class="has-text-grey">Name: </span>
+    <%= @user.name %>
+  </p>
+  <p>
+    <span class="icon is-small is-left">
+      <i class="fas fa-envelope"></i>
+    </span>
+    <span class="has-text-grey">Email: </span>
+    <%= @user.email %>
+  </p>
+  <p>
+    <span class="icon is-small is-left">
+      <i class="fas fa-calendar-check"></i>
+    </span>
+    <span class="has-text-grey">Joined: </span>
+    <%= @user.created_at.strftime("%B %d, %Y") %>
+  </p>
+  <br/>
+  <%= link_to("Edit", edit_user_registration_path(), class: "button is-info") %>
+</div>

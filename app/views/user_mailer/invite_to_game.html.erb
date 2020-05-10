@@ -1,0 +1,4 @@
+<p>Hi <%= @user.name %>,</p>
+
+<p>You have been invited by <%= @invited_by.name %> to play the game '<%= @game.title %>'</p>
+<p>Click <%= link_to("here", game_url(@game)) %> to view the game details.</p>

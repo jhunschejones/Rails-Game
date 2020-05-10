@@ -1,0 +1,16 @@
+<div class="game-container">
+  <h1 class="title is-3"><%= @game.title %></h1>
+  <p class="game-description"><%= @game.description %></p>
+  <hr/>
+  <div class="game-play-container">
+    <p class="has-text-info">Looks like your game is ready to play!</p>
+    <p class="has-text-info">Press "Go" to begin.</p>
+  </div>
+  <hr/>
+  <div class="game-footer">
+    <%= link_to("Go!", play_game_path(@game), class: "button is-primary", remote: true) %>
+    <% if current_user.can_edit_game?(@game.id) %>
+      <%= link_to("Edit game", edit_game_path(@game), class: "button is-light") %>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,6 @@
+Hi <%= @user.name %>,
+
+You have been invited by <%= @invited_by.name %> to play the game '<%= @game.title %>'
+
+Follow this link to view the game details:
+<%= game_url(@game) %>

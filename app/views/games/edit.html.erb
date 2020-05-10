@@ -1,0 +1,20 @@
+<div class="edit-game">
+  <h2 class="title is-4">Edit game:</h2>
+
+  <%= form_with(model: @game, url: game_path(@game)) do |f| %>
+    <div class="field">
+      <%= f.label :title %><br />
+      <%= f.text_field :title, autocomplete: 'off', class: "input" %>
+    </div>
+
+     <div class="field">
+      <%= f.label :description %><br />
+      <%= f.rich_text_area :description %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit "Save", class: "button is-info" %>
+      <%= link_to "Play", game_path(@game), class: "button is-primary" %>
+    </div>
+  <% end %>
+</div>

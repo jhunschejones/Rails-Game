@@ -1,0 +1,61 @@
+<%#
+# When a form submission generates errors, this view is rendered but at the rout
+# where the form is submitted, i.e. "/users". This works fine for the initial
+# render but if the user refreshes the page, there is no actual "/users" route
+# which results in a confusing experience.
+%>
+<% if resource.errors.any? %>
+  <script>window.history.replaceState("", "", '/users/edit');</script>
+<% end %>
+
+<div class="user-edit">
+  <div class="edit-user-details">
+    <h3 class="title is-4">Edit <%= resource_name.to_s.humanize.downcase %> details</h3>
+
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+
+      <div class="field">
+        <%= f.label :name %><br />
+        <%= f.text_field :name, class: "input", autocomplete: "name" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :email %><br />
+        <%= f.email_field :email, class: "input", autocomplete: "email" %>
+      </div>
+
+      <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+        <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+      <% end %>
+
+      <div class="field">
+        <%= f.label :password %> <i class="has-text-grey-light">(leave blank if you don't want to change it)</i><br />
+        <%= f.password_field :password, class: "input", autocomplete: "new-password" %>
+        <% if @minimum_password_length %>
+          <br />
+          <em class="has-text-grey-light"><%= @minimum_password_length %> characters minimum</em>
+        <% end %>
+      </div>
+
+      <div class="field">
+        <%= f.label :password_confirmation %><br />
+        <%= f.password_field :password_confirmation, class: "input", autocomplete: "new-password" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :current_password %> <i class="has-text-grey-light">(we need your current password to confirm your changes)</i><br />
+        <%= f.password_field :current_password, class: "input", autocomplete: "current-password" %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Update", class: "button is-info" %>
+      </div>
+    <% end %>
+  </div>
+
+  <br/><br/><br/>
+  <h2 class="title is-4 has-text-danger">Danger Section<h2>
+  <%= button_to "Cancel account", registration_path(resource_name), data: { confirm: "Are you sure you want to cancel your account? Confirming this action will permanently delete all your data." }, method: :delete, class: "button is-danger" %>
+  <br/>
+</div>

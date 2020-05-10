@@ -1,0 +1,19 @@
+<li class="user user_<%= user.id %>">
+  <span>
+    <%= user.name %>
+    <% if user.is_game_admin?(@game.id) %>
+      (admin)
+    <% end %>
+  </span>
+  <% if user.id == current_user.id %>
+    <%= link_to(user_path(current_user), class: "user-link has-text-grey-light") do %>
+      <span class="icon is-small">
+        <i class="fas fa-user"></i>
+      </span>
+    <% end %>
+  <% end %>
+  <% if user.id != current_user.id %>
+    <strong class="resource-action-divider has-text-link">|</strong>
+    <%= link_to("Delete", game_remove_user_path(@game, user), method: :delete, remote: :true, class: "has-text-link", data: { confirm: "Are you sure you want to remove '#{user.name}' from this game? This action is permanent." }) %>
+  <% end %>
+</li>

@@ -1,0 +1,24 @@
+<div class="edit-game">
+  <h2 class="title is-4">Manage categories:</h2>
+  <ul class="categories"><%= render(@game.categories.sort_by(&:order)) %></ul>
+  <p class="has-text-info no-categories-message is-hidden">There are no categories for this game yet!</p>
+  <br/>
+
+  <h2 class="title is-4">Add a new category:</h2>
+
+  <%= form_with(model: @category, url: game_categories_path(@game), remote: true, class: "new-category-form") do |f| %>
+      <%= f.text_field :title, placeholder: "Title...", maxlength: 100, autocomplete: 'off', class: "input"  %>
+      <%= f.submit "Create", class: "button is-info" %>
+  <% end %>
+  <p><em class="has-text-grey-light">(100 characters max)</em></p>
+
+  <br/>
+  <div class="actions">
+    <%= link_to "Play", game_path(@game), class: "button is-primary" %>
+  </div>
+</div>
+
+<% if @game.categories.size == 0 %>
+  <script>document.querySelector(".no-categories-message").classList.remove("is-hidden");</script>
+<% end %>
+

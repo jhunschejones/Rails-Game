@@ -1,0 +1,6 @@
+
+var gamePlayContainer = document.querySelector(".game-play-container");
+while (gamePlayContainer.firstChild) {
+  gamePlayContainer.removeChild(gamePlayContainer.firstChild);
+}
+gamePlayContainer.insertAdjacentHTML("beforeend", "<%= escape_javascript(render template: 'games/_game_play_selections', locals: { this_turn: @this_turn })%>");

@@ -1,0 +1,6 @@
+var option = document.querySelector(".option_<%= @option.id %>");
+option.parentNode.removeChild(option);
+
+if (document.getElementsByClassName("option").length == 0) {
+  document.querySelector(".no-options-message").classList.remove("is-hidden");
+}

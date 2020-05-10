@@ -1,0 +1,6 @@
+var category = document.querySelector(".category_<%= @category.id %>");
+category.parentNode.removeChild(category);
+
+if (document.getElementsByClassName("category").length == 0) {
+  document.querySelector(".no-categories-message").classList.remove("is-hidden");
+}

@@ -1,0 +1,7 @@
+var categoryList = document.querySelector(".categories");
+while (categoryList.firstChild) {
+  categoryList.removeChild(categoryList.firstChild);
+}
+document.querySelector(".categories").insertAdjacentHTML("beforeend", "<%= escape_javascript(render @game.categories.sort_by(&:order), locals: { game: @game }) %>");
+document.getElementsByName("category[title]")[0].value = "";
+document.querySelector(".no-categories-message").classList.add("is-hidden");

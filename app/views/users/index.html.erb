@@ -1,0 +1,27 @@
+<div class="edit-game-users">
+  <h2 id="users" class="title is-4">Edit players<h2>
+  <ul class="users">
+    <%= render(@game.users, locals: { game: @game }) %>
+  </ul>
+
+  <br/>
+
+  <%= form_with(model: @new_user, url: game_add_user_path(@game), remote: true) do |f| %>
+    <div class="field">
+      <%= f.label :name, "New player's name" %><br />
+      <%= f.text_field :name, autocomplete: 'off', class: "input" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :email, "New player's email (required)" %><br />
+      <%= f.email_field :email, autocomplete: 'off', class: "input" %>
+    </div>
+
+
+    <div class="actions">
+      <%= f.submit "Add player", class: "button is-info" %>
+    </div>
+  <% end %>
+
+  <br/>
+</div>

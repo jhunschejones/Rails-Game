@@ -1,0 +1,19 @@
+<div class="new-game">
+  <h2 class="title is-4">New game</h2>
+
+  <%= form_with(model: @game, url: games_path) do |f| %>
+    <div class="field">
+      <%= f.label :title %>&nbsp;<em class="has-text-grey-light">(100 characters max)</em><br />
+      <%= f.text_field :title, maxlength: 100, autocomplete: 'off', class: "input" %>
+    </div>
+
+     <div class="field">
+      <%= f.label :description %><br />
+      <%= f.rich_text_area :description %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit "Create", class: "button is-info" %>
+    </div>
+  <% end %>
+</div>

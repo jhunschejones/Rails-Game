@@ -1,0 +1,49 @@
+.games-container,
+.game-container,
+.new-game,
+.edit-game-users,
+.edit-game {
+  padding: 12px;
+}
+
+.game-container {
+  .category-title,
+  .option-description {
+    text-align: center;
+  }
+  .game-footer {
+    display: flex;
+    justify-content: center;
+    .button {
+      margin: 20px 5px;
+    }
+  }
+}
+
+.edit-game {
+  .categories {
+    margin-top: -8px;
+  }
+  .new-category-form,
+  .new-option-form {
+    display: inline-flex;
+    width: 100%;
+    max-width: 500px;
+    .input {
+      margin-right: 5px;
+    }
+  }
+}
+
+.resource-action-divider {
+  margin: 0px 4px;
+  user-select: none;
+}
+
+.resource-order {
+  display: inline-block;
+  width: 24px;
+  margin-right: 1px;
+  text-align: right;
+}
+

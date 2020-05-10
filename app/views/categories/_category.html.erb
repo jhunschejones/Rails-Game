@@ -1,0 +1,10 @@
+<li class="category category_<%= category.id %>">
+  <span class="resource-order has-text-grey-light"><%= sprintf('%02d', category.order) %>&colon;</span>
+  <span class="resource-title"><%= category.title %></span>
+  <span class="resource-children-count has-text-grey-light">(<%= category.options.size %> options)</span>
+
+  <strong class="resource-action-divider has-text-link">|</strong>
+  <%= link_to("Edit", edit_game_category_path(@game, category), class: "has-text-link") %>
+  <strong class="resource-action-divider has-text-link">|</strong>
+  <%= link_to("Delete", game_category_path(@game, category), method: :delete, remote: :true, class: "has-text-link", data: { confirm: "Are you sure you want to delete '#{category.title}'? This action is permanent." }) %>
+</li>
