@@ -4,14 +4,28 @@
   <% if current_user.can_edit_game?(@game.id) %>
     <br/>
     <%= link_to("Edit game", edit_game_path(@game), class: "button is-warning is-small footer-item") %>
+    <br/>
   <% end %>
+  <br/>
+  <p class="has-text-grey-light has-text-centered">
+    Current player:
+    <% if (@game.current_player || @game.next_player) == current_user %>
+      <strong class="has-text-primary">you!</strong>
+    <% else %>
+      <%= (@game.current_player || @game.next_player).name %>
+    <% end %>
+  </p>
   <hr/>
   <div class="game-play-container">
     <% if @this_turn %>
       <%= render(template: 'games/_game_play_selections', locals: { this_turn: @this_turn }) %>
     <% else %>
       <p class="has-text-info">Looks like your game is ready to start!</p>
-      <p class="has-text-info">If it's your turn, you may press "Go" to begin.</p>
+      <% if current_user == @game.next_player %>
+        <p class="has-text-info">Since it's your turn, you may press "Go" to begin.</p>
+      <% else %>
+        <p class="has-text-info">Once the game begins, you will see the confirmation button below light up.</p>
+      <% end %>
     <% end %>
   </div>
   <hr/>

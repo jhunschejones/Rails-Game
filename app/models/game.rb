@@ -30,6 +30,10 @@ class Game < ApplicationRecord
     turns.last
   end
 
+  def options
+    categories.flat_map(&:options)
+  end
+
   def ordered_players
     users.sort_by { |user| user.order_on(self) }
   end

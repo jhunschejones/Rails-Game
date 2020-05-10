@@ -4,7 +4,7 @@ class GamesController < ApplicationController
   before_action :confirm_ready_for_game_play, only: [:show]
 
   def index
-    @games = Game.all
+    @games = current_user.games.includes(:users, categories: [:options])
   end
 
   def show

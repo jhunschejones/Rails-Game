@@ -37,6 +37,10 @@ class User < ApplicationRecord
     is_game_admin?(game_id)
   end
 
+  def can_create_games?
+    site_role == SITE_ADMIN
+  end
+
   # Used for displaying "admin" label only, never directly for access control
   def is_game_admin?(game_id)
     UserGame.where(user_id: id, game_id: game_id, role: UserGame::GAME_ADMIN).exists?

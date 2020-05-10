@@ -13,7 +13,7 @@
   <% else %>
     <% if current_user == @game.current_player %>
        <%# The game is started : the turn is still going : you are the current player %>
-      <div class="title is-4 has-text-primary footer-item your-turn">Your turn!</div>
+      <!--div class="title is-4 has-text-primary footer-item your-turn">Your turn!</div-->
     <% elsif current_user.has_confirmed(@this_turn) %>
        <%# The game is started : the turn is still going : you are not the current player : you've confirmed the action was completed %>
       <button class="button is-success footer-item" disabled>Confirm action completed</button>

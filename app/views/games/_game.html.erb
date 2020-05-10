@@ -1,1 +1,13 @@
-<li><%= link_to game.title, game_path(game.id) %></li>
+<li>
+  <%= link_to(game_path(game), class: "game") do %>
+    <p class="has-text-link">
+      <%= game.title %>
+      <% if current_user.is_game_admin?(game.id) %>
+        <span class="has-text-grey-light">(admin)</span>
+      <% end %>
+    </p>
+    <p class="has-text-grey-light"><%= pluralize(game.users.size, "player") %></p>
+    <p class="has-text-grey-light"><%= pluralize(game.categories.size, "category") %></p>
+    <p class="has-text-grey-light"><%= pluralize(game.options.size, "option") %></p>
+  <% end %>
+</li>

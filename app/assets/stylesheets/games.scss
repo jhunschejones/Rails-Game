@@ -1,9 +1,21 @@
-.games-container,
+.all-games-container,
 .game-container,
 .new-game,
 .edit-game-users,
 .edit-game {
   padding: 12px;
+}
+
+.all-games-container {
+  .game {
+    display: block;
+    border: 1px solid hsl(0, 0%, 88%);
+    border-radius: 6px;
+    box-shadow: 0.1em 0.1em 0.4em rgba(10, 10, 10, 0.1);
+    padding: 12px 20px 12px 15px;
+    margin: 12px 0px;
+    max-width: 600px;
+  }
 }
 
 .game-container {
