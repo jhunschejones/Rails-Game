@@ -24,7 +24,6 @@ class Turn < ApplicationRecord
   private
 
   def enqueue_update
-    puts "Enqueuing game broadcast job"
     GameBroadcastJob.perform_later(game_id)
   end
 end

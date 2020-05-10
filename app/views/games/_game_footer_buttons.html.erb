@@ -19,7 +19,7 @@
       <button class="button is-success footer-item" disabled>Confirm action completed</button>
     <% else %>
        <%# The game is started : the turn is still going : you are not the current player : you need to confirm that the action has been completed%>
-      <%= link_to("Confirm action completed", confirm_action_completed_path(@game), class: "button is-success footer-item", remote: true, method: :post) %>
+      <%= link_to("Confirm action completed", game_confirm_action_completed_path(@game), class: "button is-success footer-item", remote: true, method: :post) %>
     <% end %>
   <% end %>
 <% else %>
