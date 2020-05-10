@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(version: 2020_05_10_030911) do
   create_table "turns", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "game_id", null: false
+    t.integer "confirmed_by", default: [], array: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["game_id"], name: "index_turns_on_game_id"

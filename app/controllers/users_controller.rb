@@ -1,8 +1,14 @@
 class UsersController < ApplicationController
-  before_action :authorize_user_game_access
-  before_action :authorize_user_game_edit
+  before_action :authorize_user_game_access, except: [:show]
+  before_action :authorize_user_game_edit, except: [:show]
   before_action :set_game, except: [:show]
 
+  # GET /games/:game_id/users
+  def index
+    @new_user = User.new
+  end
+
+  # GET /users/:id
   def show
     if params[:id] != current_user.id.to_s
       redirect_to user_path(current_user.id), alert: "You cannot view other user's profiles."
@@ -11,8 +17,16 @@ class UsersController < ApplicationController
     @user = current_user
   end
 
-  def index
-    @new_user = User.new
+  # GET /games/:game_id/users/:user_id/edit
+  def edit
+    @user = User.find(params[:id])
+  end
+
+  # PATCH /games/:game_id/users/:user_id
+  def update
+    user_game = UserGame.where(user_id: params[:user_id], game: @game).first
+    user_game.update!(order: params[:order])
+    redirect_to game_users_path(@game)
   end
 
   def add_to_game
@@ -46,7 +60,7 @@ class UsersController < ApplicationController
   private
 
   def set_game
-    @game = Game.includes(:users).find(params[:game_id])
+    @game = Game.includes(:users, :user_games).find(params[:game_id])
   end
 
   def user_params

@@ -1,6 +1,5 @@
 import * as ActiveStorage from "@rails/activestorage";
 import Rails from "@rails/ujs";
-import * as Channels from "channels";
 import Turbolinks from "turbolinks";
 
 Rails.start();
@@ -8,6 +7,7 @@ Turbolinks.start();
 ActiveStorage.start();
 require("trix")
 require("@rails/actiontext")
+require("channels");
 
 import MenuHamburger from "src/menu_hamburger";
 import FlashDelete from "src/flash_delete";

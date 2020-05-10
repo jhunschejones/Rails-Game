@@ -14,8 +14,11 @@
   .game-footer {
     display: flex;
     justify-content: center;
-    .button {
+    .footer-item {
       margin: 20px 5px;
+    }
+    .your-turn {
+      padding: 5px;
     }
   }
 }
@@ -32,6 +35,12 @@
     .input {
       margin-right: 5px;
     }
+  }
+}
+
+.edit-game-users {
+  .title {
+    margin-bottom: 12px;
   }
 }
 

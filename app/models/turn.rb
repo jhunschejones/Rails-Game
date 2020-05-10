@@ -3,6 +3,12 @@ class Turn < ApplicationRecord
   belongs_to :game
   has_many :selected_options
 
+  after_save { GameBroadcastJob.perform_now(id) }
+
+  def completed?
+    game.users.size - 1 == confirmed_by.size
+  end
+
   def has_same_selected_options_as?(other_turn)
     sorted_options == other_turn.sorted_options
   end

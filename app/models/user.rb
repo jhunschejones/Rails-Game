@@ -17,6 +17,18 @@ class User < ApplicationRecord
   SITE_ADMIN = "admin".freeze
   USER_SITE_ROLES = [SITE_USER, SITE_ADMIN].freeze
 
+  def has_confirmed(turn)
+    turn.confirmed_by.include?(id)
+  end
+
+  def user_game_for(game)
+    UserGame.where(game: game, user: self).first
+  end
+
+  def order_on(game)
+    user_game_for(game).order || 0
+  end
+
   def can_access_game?(game_id)
     UserGame.where(user_id: id, game_id: game_id).exists?
   end

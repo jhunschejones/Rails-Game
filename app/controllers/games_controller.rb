@@ -8,6 +8,9 @@ class GamesController < ApplicationController
   end
 
   def show
+    if @game.last_turn
+      @this_turn = @game.last_turn
+    end
   end
 
   def new
@@ -27,25 +30,14 @@ class GamesController < ApplicationController
 
   def update
     @game.update!(game_params)
-    redirect_to game_categories_path(@game)
+    redirect_to edit_game_path(@game)
   rescue ActiveRecord::RecordInvalid => e
     redirect_to edit_game_path(@game), notice: e.message.split(": ")[1]
   end
 
   def play
-    last_turn = @game.last_turn
-    @this_turn = Turn.new(user: current_user, game: @game)
-
-    while true
-      @this_turn.selected_options = []
-      @game.categories.each do |category|
-        @this_turn.selected_options << SelectedOption.new(option: category.options.sample)
-      end
-      break unless last_turn.present? && @this_turn.has_same_selected_options_as?(last_turn)
-    end
-
-    @this_turn.save!
-    last_turn&.destroy!
+    @game.play(current_user)
+    @this_turn = @game.last_turn
 
     respond_to(&:js)
   end
@@ -62,7 +54,7 @@ class GamesController < ApplicationController
     if current_user.can_edit_game?(@game.id)
       redirect_to game_categories_path(@game), notice: "Set at least 2 options for each of your categories before you start!"
     else
-      redirect_to game_path(@game), notice: "The game admin has not finished setting options for all the categories in this game yet!"
+      redirect_to game_path(@game), notice: "The game admin has not finished setting up this game yet!"
     end
   end
 

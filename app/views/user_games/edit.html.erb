@@ -1,0 +1,19 @@
+<div class="edit-game-users">
+  <h2 class="title is-4">Edit player order:<h2>
+
+  <p>Game: <%= @user_game.game.title %></p>
+  <p>User: <%= @user_game.user.name %></p><br/>
+
+  <%= form_with(model: @user_game, url: game_user_game_path(@game, @user_game)) do |f| %>
+    <div class="field">
+      <%= f.label :order %><br />
+      <div class="select">
+        <%= f.select :order, 1..@game.users.size %>
+      </div>
+    </div>
+
+    <div class="actions">
+      <%= f.submit "Update order", class: "button is-info" %>
+    </div>
+  <% end %>
+</div>

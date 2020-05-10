@@ -1,7 +1,7 @@
 <div class="edit-game-users">
-  <h2 id="users" class="title is-4">Edit players<h2>
+  <h2 class="title is-4">Edit players:<h2>
   <ul class="users">
-    <%= render(@game.users, locals: { game: @game }) %>
+    <%= render(@game.ordered_players, locals: { game: @game }) %>
   </ul>
 
   <br/>
@@ -17,11 +17,12 @@
       <%= f.email_field :email, autocomplete: 'off', class: "input" %>
     </div>
 
-
-    <div class="actions">
-      <%= f.submit "Add player", class: "button is-info" %>
-    </div>
+    <%= f.submit "Add player", class: "button is-info" %>
   <% end %>
-
+  <br/>
+  <div class="actions">
+    <%= link_to "Back", edit_game_path(@game), class: "button is-light" %>
+    <%= link_to "Play", game_path(@game), class: "button is-primary" %>
+  </div>
   <br/>
 </div>
