@@ -1,9 +1,11 @@
 import consumer from "./consumer"
 
-if (window.location.pathname.match(/^\/games\/(\d+)$/)) {
+// To only match the game/show page, add a `$` end-of string character to the
+// end of these regexes
+if (window.location.pathname.match(/^\/games\/(\d+)/)) {
   consumer.subscriptions.create({
     channel: "GameChannel",
-    game_id: window.location.pathname.match(/^\/games\/(\d+)$/)[1]
+    game_id: window.location.pathname.match(/^\/games\/(\d+)/)[1]
   }, {
     connected() {
       // Called when the subscription is ready for use on the server
@@ -26,7 +28,10 @@ if (window.location.pathname.match(/^\/games\/(\d+)$/)) {
       // gamePlayContainer.insertAdjacentHTML("beforeend", data);
 
       // simplest solution
-      location.reload();
+      // location.reload();
+
+      // Reloading with just Turbolinks to avoid flickering
+      Turbolinks.visit(window.location.toString(), {action: 'replace'})
     }
   });
 }

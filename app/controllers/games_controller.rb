@@ -38,8 +38,7 @@ class GamesController < ApplicationController
   def play
     @game.play(current_user)
     @this_turn = @game.last_turn
-
-    respond_to(&:js)
+    head :ok, content_type: "text/javascript"
   end
 
   def turn_completed

@@ -18,7 +18,7 @@ class UserGamesController < ApplicationController
     turn = user_game.game.last_turn
     turn.confirmed_by << current_user.id
     turn.save!
-    respond_to(&:js)
+    head :ok, content_type: "text/javascript"
   end
 
   private
