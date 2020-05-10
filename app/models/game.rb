@@ -10,7 +10,7 @@ class Game < ApplicationRecord
   Selection = Struct.new(:category, :option)
 
   def ready_to_play?
-    has_enough_options?
+    categories.size > 0 && has_enough_options?
   end
 
   def has_enough_options?
@@ -18,11 +18,12 @@ class Game < ApplicationRecord
   end
 
   def current_player
-    last_turn.user
+    last_turn&.user
   end
 
   def next_player
-    ordered_players[ordered_players.index(last_turn.user) + 1] || ordered_players.first
+    return ordered_players.first unless current_player
+    ordered_players[ordered_players.index(current_player) + 1] || ordered_players.first
   end
 
   def last_turn

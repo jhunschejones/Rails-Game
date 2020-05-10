@@ -10,28 +10,12 @@
     <% if @this_turn %>
       <%= render(template: 'games/_game_play_selections', locals: { this_turn: @this_turn }) %>
     <% else %>
-      <p class="has-text-info">Looks like your game is ready to play!</p>
-      <p class="has-text-info">Press "Go" to begin.</p>
+      <p class="has-text-info">Looks like your game is ready to start!</p>
+      <p class="has-text-info">If it's your turn, you may press "Go" to begin.</p>
     <% end %>
   </div>
   <hr/>
   <div class="game-footer">
-    <% if @this_turn && @this_turn.completed? %>
-      <% if current_user == @game.next_player %>
-        <%= link_to("Go!", play_game_path(@game), class: "button is-primary footer-item", remote: true) %>
-      <% elsif current_user == @game.current_player %>
-        <div class="title is-4 has-text-success footer-item your-turn">Turn completed!</div>
-      <% else %>
-        <button class="button is-success footer-item" disabled>Confirm action completed</button>
-      <% end %>
-    <% elsif @this_turn %>
-      <% if current_user == @game.current_player %>
-        <div class="title is-4 has-text-primary footer-item your-turn">Your turn!</div>
-      <% elsif current_user.has_confirmed(@this_turn) %>
-        <button class="button is-success footer-item" disabled>Confirm action completed</button>
-      <% else %>
-        <%= link_to("Confirm action completed", confirm_action_completed_path(@game), class: "button is-success footer-item", remote: true, method: :post) %>
-      <% end %>
-    <% end %>
+    <%= render(template: 'games/_game_footer_buttons', locals: { this_turn: @this_turn, game: @game }) %>
   </div>
 </div>
