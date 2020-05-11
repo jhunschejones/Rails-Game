@@ -1,5 +1,5 @@
 <li>
-  <%= link_to(game_path(game), class: "game") do %>
+  <%= link_to(game_path(game), class: "game", data: { turbolinks: false }) do %>
     <p class="has-text-link">
       <%= game.title %>
       <% if current_user.is_game_admin?(game.id) %>
