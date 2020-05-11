@@ -7,10 +7,14 @@
     <br/>
   <% end %>
   <br/>
-  <p class="has-text-grey-light has-text-centered">
+  <p class="has-text-grey-light has-text-centered current-player">
     Current player:
-    <% if (@game.current_player || @game.next_player) == current_user %>
-      <strong class="has-text-primary">you!</strong>
+    <% if @game.requires_turn_complete_confirmation? %>
+      <% if (@game.current_player || @game.next_player) == current_user %>
+        <strong class="has-text-primary">you!</strong>
+      <% else %>
+        <%= (@game.current_player || @game.next_player).name %>
+      <% end %>
     <% else %>
       <%= (@game.current_player || @game.next_player).name %>
     <% end %>
@@ -21,15 +25,23 @@
       <%= render(template: 'games/_game_play_selections', locals: { this_turn: @this_turn }) %>
     <% else %>
       <p class="has-text-info">Looks like your game is ready to start!</p>
-      <% if current_user == @game.next_player %>
-        <p class="has-text-info">Since it's your turn, you may press "Go" to begin.</p>
+      <% if @game.requires_turn_complete_confirmation? %>
+        <% if current_user == @game.next_player %>
+          <p class="has-text-info">Since it's your turn, you may press "Go" to begin.</p>
+        <% else %>
+          <p class="has-text-info">Once the game begins, you will see the confirmation button below light up.</p>
+        <% end %>
       <% else %>
-        <p class="has-text-info">Once the game begins, you will see the confirmation button below light up.</p>
+        <p class="has-text-info">The first player may press "Go" to begin.</p>
       <% end %>
     <% end %>
   </div>
   <hr/>
   <div class="game-footer">
-    <%= render(template: 'games/_game_footer_buttons', locals: { this_turn: @this_turn, game: @game }) %>
+    <% if @game.requires_turn_complete_confirmation? %>
+      <%= render(template: 'games/_game_footer_buttons', locals: { this_turn: @this_turn, game: @game }) %>
+    <% else %>
+      <%= link_to("Go!", play_game_path(@game), class: "button is-primary footer-item", remote: true) %>
+    <% end %>
   </div>
 </div>

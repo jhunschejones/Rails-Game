@@ -12,12 +12,19 @@
       <%= f.rich_text_area :description %>
     </div>
 
+    <div class="field">
+      <%= f.label :requires_turn_complete_confirmation, "Require players to verify turn is complete" %> <em class="has-text-grey-light">(Multi-machine mode)</em><br />
+      <div class="select">
+        <%= f.select :requires_turn_complete_confirmation, [['On', true], ['Off', false]] %>
+      </div>
+    </div>
+
     <%= f.submit "Save", class: "button is-info" %>
   <% end %>
   <br/>
   <div class="actions">
     <%= link_to "Players", game_users_path(@game), class: "button is-warning" %>
     <%= link_to "Categories", game_categories_path(@game), class: "button is-warning" %>
-    <%= link_to "Play", game_path(@game), class: "button is-primary" %>
+    <%= link_to "Play", game_path(@game), class: "button is-primary", data: { turbolinks: false } %>
   </div>
 </div>

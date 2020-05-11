@@ -2,12 +2,15 @@ class GameBroadcastJob < ApplicationJob
   queue_as :default
 
   def perform(game_id)
-    # Fancy version, sending new data
-    # @this_turn = Turn.includes(:game, selected_options: [option: [:category]]).find(turn_id)
-    # GameChannel.broadcast_to Game.find(@this_turn.game_id), render_play_selections_for(@this_turn)
-    #
-    # Basic version, just triggering page reload:
-    GameChannel.broadcast_to Game.find(game_id), {}
+    @game = Game.includes(:turns).find(game_id)
+
+    if @game.requires_turn_complete_confirmation?
+      # No data sent, just triggering page reload
+      GameChannel.broadcast_to @game, {}
+    else
+      # Send new data for simpler case
+      GameChannel.broadcast_to @game, { "gamePlaySections" => render_play_selections_for(@game.last_turn), "currentPlayer" => @game.current_player.name }
+    end
   end
 
   private

@@ -29,7 +29,7 @@ class CategoriesController < ApplicationController
 
   def update
     @category.update!(categories_params)
-    redirect_to edit_game_category_path(@game)
+    redirect_to edit_game_category_path(@game), success: "Category saved!"
   rescue ActiveRecord::RecordInvalid => e
     redirect_to edit_game_category_path(@game), notice: e.message.split(": ")[1]
   end

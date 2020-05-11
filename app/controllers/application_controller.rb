@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  add_flash_types :success
   before_action :authenticate_user!
 
   def authorize_user_game_access

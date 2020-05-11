@@ -30,7 +30,7 @@ class GamesController < ApplicationController
 
   def update
     @game.update!(game_params)
-    redirect_to edit_game_path(@game)
+    redirect_to edit_game_path(@game), success: "Game saved!"
   rescue ActiveRecord::RecordInvalid => e
     redirect_to edit_game_path(@game), notice: e.message.split(": ")[1]
   end
@@ -62,6 +62,6 @@ class GamesController < ApplicationController
   end
 
   def game_params
-    params.require(:game).permit(:title, :description)
+    params.require(:game).permit(:title, :description, :requires_turn_complete_confirmation)
   end
 end

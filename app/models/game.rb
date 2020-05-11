@@ -39,8 +39,13 @@ class Game < ApplicationRecord
   end
 
   def play(current_user)
-    last_turn_record = last_turn()
-    this_turn = Turn.new(user: current_user, game: self)
+    last_turn_record = last_turn
+
+    # If playing in single-machine mode, assume each click is the next player
+    this_turn = Turn.new(
+      user: requires_turn_complete_confirmation ? current_user : next_player,
+      game: self
+    )
 
     while true
       this_turn.selected_options = []

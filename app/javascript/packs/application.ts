@@ -5,8 +5,8 @@ import Turbolinks from "turbolinks";
 Rails.start();
 Turbolinks.start();
 ActiveStorage.start();
-require("trix")
-require("@rails/actiontext")
+require("trix");
+require("@rails/actiontext");
 require("channels");
 
 import MenuHamburger from "src/menu_hamburger";
@@ -17,6 +17,8 @@ document.addEventListener("turbolinks:load", () => {
     document.querySelector(".navbar-burger") as HTMLElement
   ).initHandlers();
 
-  const flashDeleteButton = document.querySelector(".flash .delete") as HTMLElement;
+  const flashDeleteButton = document.querySelector(
+    ".flash .delete"
+  ) as HTMLElement;
   if (flashDeleteButton) new FlashDelete(flashDeleteButton).initHandlers();
 });

@@ -15,7 +15,7 @@
   <br/>
   <div class="actions">
     <%= link_to "Back", edit_game_path(@game), class: "button is-light" %>
-    <%= link_to "Play", game_path(@game), class: "button is-primary" %>
+    <%= link_to "Play", game_path(@game), class: "button is-primary", data: { turbolinks: false } %>
   </div>
 </div>
 

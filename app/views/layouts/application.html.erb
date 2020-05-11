@@ -53,6 +53,13 @@
       </div>
     </nav>
 
+    <% if success %>
+      <div class="flash notification is-success" data-controller="flash">
+        <button class="delete" data-action="click->flash#close"></button>
+        <p class="success"><%= success %></p>
+      </div>
+    <% end %>
+
     <% if notice %>
       <div class="flash notification is-warning" data-controller="flash">
         <button class="delete" data-action="click->flash#close"></button>

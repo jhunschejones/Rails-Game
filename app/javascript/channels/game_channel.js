@@ -1,11 +1,9 @@
 import consumer from "./consumer"
 
-// To only match the game/show page, add a `$` end-of string character to the
-// end of these regexes
-if (window.location.pathname.match(/^\/games\/(\d+)/)) {
+if (window.location.pathname.match(/^\/games\/(\d+)$/)) {
   consumer.subscriptions.create({
     channel: "GameChannel",
-    game_id: window.location.pathname.match(/^\/games\/(\d+)/)[1]
+    game_id: window.location.pathname.match(/^\/games\/(\d+)$/)[1]
   }, {
     connected() {
       // Called when the subscription is ready for use on the server
@@ -18,20 +16,26 @@ if (window.location.pathname.match(/^\/games\/(\d+)/)) {
     },
 
     received(data) {
-      // Called when there's incoming data on the websocket for this channel
+      if (Object.keys(data).length === 0) {
+        // Reloading page with just Turbolinks to avoid flickering
+        // also attempting to maintain scroll position around reload
+        var top = document.scrollingElement.scrollTop;
+        var scrollToTop = () => {
+          document.scrollingElement.scrollTo(0, top);
+          document.removeEventListener("turbolinks:load", scrollToTop);
+        };
 
-      // Same action as /app/views/games/play.js.erb
-      // var gamePlayContainer = document.querySelector(".game-play-container");
-      // while (gamePlayContainer.firstChild) {
-      //   gamePlayContainer.removeChild(gamePlayContainer.firstChild);
-      // }
-      // gamePlayContainer.insertAdjacentHTML("beforeend", data);
+        Turbolinks.visit(window.location.toString(), {action: 'replace'});
+        document.addEventListener("turbolinks:load", scrollToTop);
 
-      // simplest solution
-      // location.reload();
-
-      // Reloading with just Turbolinks to avoid flickering
-      Turbolinks.visit(window.location.toString(), {action: 'replace'})
+      } else {
+        var gamePlayContainer = document.querySelector(".game-play-container");
+        while (gamePlayContainer.firstChild) {
+          gamePlayContainer.removeChild(gamePlayContainer.firstChild);
+        }
+        gamePlayContainer.insertAdjacentHTML("beforeend", data["gamePlaySections"]);
+        document.querySelector(".current-player").textContent = `Current player: ${data["currentPlayer"]}`;
+      }
     }
   });
 }
