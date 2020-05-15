@@ -14,6 +14,7 @@ class GamesController < ApplicationController
   end
 
   def new
+    redirect_to(games_path, notice: "You do not have access to create games") and return unless current_user.can_create_games?
     @game = Game.new
   end
 
