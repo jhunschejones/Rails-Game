@@ -1,6 +1,7 @@
 class GamesController < ApplicationController
   before_action :authorize_user_game_access, except: [:index, :new, :create]
   before_action :authorize_user_game_edit, only: [:edit, :update]
+  before_action :authorize_user_game_create, only: [:new, :create]
   before_action :set_game, except: [:index, :new, :create]
   before_action :confirm_ready_for_game_play, only: [:show]
 
@@ -15,7 +16,6 @@ class GamesController < ApplicationController
   end
 
   def new
-    redirect_to(games_path, notice: "You do not have access to create games") and return unless current_user.can_create_games?
     @game = Game.new
   end
 
@@ -23,7 +23,6 @@ class GamesController < ApplicationController
   end
 
   def create
-    redirect_to(games_path, notice: "You do not have access to create games") and return unless current_user.can_create_games?
     game = Game.create!(game_params)
     UserGame.create!(user: current_user, game: game, role: UserGame::GAME_ADMIN)
     redirect_to game_path(game)
@@ -40,15 +39,16 @@ class GamesController < ApplicationController
 
   def play
     @game.play(current_user)
-    @this_turn = @game.last_turn
-    head :ok, content_type: "text/javascript"
-  end
-
-  def turn_completed
-    redirect_to game_path(@game)
+    head :ok, content_type: "text/javascript; charset=utf-8"
   end
 
   private
+
+  def authorize_user_game_create
+    unless current_user.can_create_games?
+      redirect_to(games_path, notice: "You do not have permission to create games")
+    end
+  end
 
   def confirm_ready_for_game_play
     return true if @game.ready_to_play?
