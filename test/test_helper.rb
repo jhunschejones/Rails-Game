@@ -2,6 +2,8 @@ ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 require 'rails/test_help'
 require 'minitest/rails' # allows `describe` blocks
+require 'mocha/minitest' # alows mocking
+# require 'minitest/pride'
 
 class ActiveSupport::TestCase
   # Run tests in parallel with specified workers
