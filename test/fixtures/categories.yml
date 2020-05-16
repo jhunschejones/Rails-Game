@@ -1,0 +1,9 @@
+one:
+  game: one
+  title: Action
+  order: 1
+
+two:
+  game: two
+  title: Verb
+  order: 1

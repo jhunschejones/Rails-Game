@@ -1,0 +1,15 @@
+one:
+  category: one
+  description: Watch a movie
+
+two:
+  category: one
+  description: Make a fancy breakfast
+
+three:
+  category: two
+  description: Play outside
+
+four:
+  category: two
+  description: Read a book
