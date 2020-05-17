@@ -27,11 +27,8 @@ if User.count == 0
   game.categories.last.options << living_room_option
   game.save!
 
-  turn = Turn.create!(user: user, game: game)
+  turn = Turn.new(user: user, game: game)
   turn.selected_options << SelectedOption.new(option: read_option)
   turn.selected_options << SelectedOption.new(option: outside_option)
   turn.save!
-
-  game.turns << turn
-  game.save!
 end
