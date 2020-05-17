@@ -56,21 +56,21 @@
     <% if success %>
       <div class="flash notification is-success" data-controller="flash">
         <button class="delete" data-action="click->flash#close"></button>
-        <p class="success"><%= success %></p>
+        <p class="success"><%= raw success %></p>
       </div>
     <% end %>
 
     <% if notice %>
       <div class="flash notification is-warning" data-controller="flash">
         <button class="delete" data-action="click->flash#close"></button>
-        <p class="notice"><%= notice %></p>
+        <p class="notice"><%= raw notice %></p>
       </div>
     <% end %>
 
     <% if alert %>
       <div class="flash notification is-danger" data-controller="flash">
         <button class="delete" data-action="click->flash#close"></button>
-        <p class="alert"><%= alert %></p>
+        <p class="alert"><%= raw alert %></p>
       </div>
     <% end %>
 
