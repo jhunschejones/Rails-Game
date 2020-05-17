@@ -2,6 +2,10 @@ class ApplicationController < ActionController::Base
   add_flash_types :success
   before_action :authenticate_user!
 
+  rescue_from ActiveRecord::RecordNotFound do
+    redirect_to(games_path, notice: "Sorry, we couldn't seem to find that game")
+  end
+
   def authorize_user_game_access
     redirect_to(games_path, notice: "You do not have access to that game") unless current_user.can_access_game?(params[:game_id] || params[:id])
   end
