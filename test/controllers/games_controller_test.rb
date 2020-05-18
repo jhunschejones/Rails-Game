@@ -21,26 +21,9 @@ class GamesControllerTest < ActionDispatch::IntegrationTest
         assert_select "a.game", /#{games(:one).title}/
       end
 
-      describe "when user has the user site_role" do
-        setup do
-          users(:one).update!(site_role: "user")
-        end
-
-        test "does not show new game button" do
-          get games_path
-          assert_select "a", count: 0, text: /New game/
-        end
-      end
-
-      describe "when user has the admin site_role" do
-        setup do
-          users(:one).update!(site_role: "admin")
-        end
-
-        test "shows new game button" do
-          get games_path
-          assert_select "a", /New game/
-        end
+      test "shows new game button" do
+        get games_path
+        assert_select "a", /New game/
       end
     end
   end
@@ -125,7 +108,7 @@ class GamesControllerTest < ActionDispatch::IntegrationTest
             test "shows Edit game link" do
               get game_path(games(:one))
               assert_response :success
-              assert_select "a.button", /Edit game/
+              assert_select "a.edit-game-button", /Edit/
             end
           end
         end
@@ -146,20 +129,24 @@ class GamesControllerTest < ActionDispatch::IntegrationTest
         sign_in users(:one)
       end
 
-      describe "when user has user site_role" do
+      describe "when user is a part of more than 10 games" do
         setup do
-          users(:one).update!(site_role: "user")
+          ActiveRecord::Base.transaction do
+            10.times do |i|
+              game = Game.create!(title: "New Game #{i}")
+              UserGame.create!(user: users(:one), game: game, role: UserGame::GAME_ADMIN)
+            end
+          end
         end
 
-        test "redirects to games page" do
-          expected_message = "You do not have permission to create games"
+        test "redirects to games page with message" do
           get new_game_path
           assert_redirected_to games_path
-          assert_equal expected_message, flash[:notice]
+          assert_match /You cannot be a part of more than 10 games/, flash[:notice]
         end
       end
 
-      describe "when user has admin site_role" do
+      describe "when user is a part of less than 10 games" do
         test "shows new page" do
           get new_game_path
           assert_response :success
@@ -225,36 +212,36 @@ class GamesControllerTest < ActionDispatch::IntegrationTest
         sign_in users(:one)
       end
 
-      describe "when user has the user site_role" do
+      describe "when user is a part of more than 10 games" do
         setup do
-          users(:one).update!(site_role: "user")
-        end
-
-        test "redirects to games page" do
-          expected_message = "You do not have permission to create games"
-          post games_path, params: { game: { title: "My New Game" } }
-          assert_redirected_to games_path
-          assert_equal expected_message, flash[:notice]
+          ActiveRecord::Base.transaction do
+            10.times do |i|
+              game = Game.create!(title: "New Game #{i}")
+              UserGame.create!(user: users(:one), game: game, role: UserGame::GAME_ADMIN)
+            end
+          end
         end
 
         test "does not create a new game" do
           assert_no_difference 'Game.count' do
-            post games_path, params: { game: { title: "My New Game" } }
+            post games_path, params: { game: { title: "Another New Game" } }
           end
         end
 
         test "does not create a new UserGame record" do
           assert_no_difference 'UserGame.count' do
-            post games_path, params: { game: { title: "My New Game" } }
+            post games_path, params: { game: { title: "Another New Game" } }
           end
+        end
+
+        test "redirects to games page with message" do
+          post games_path, params: { game: { title: "Another New Game" } }
+          assert_redirected_to games_path
+          assert_match /You cannot be a part of more than 10 games/, flash[:notice]
         end
       end
 
-      describe "when user has the admin site_role" do
-        setup do
-          users(:one).update!(site_role: "admin")
-        end
-
+      describe "when user is a part of less than 10 games" do
         test "creats a new game" do
           assert_difference 'Game.count', 1 do
             post games_path, params: { game: { title: "My New Game" } }
@@ -330,9 +317,76 @@ class GamesControllerTest < ActionDispatch::IntegrationTest
         test "redirects to game edit page" do
           patch game_path(games(:one)), params: { game: { title: "Lets Change The Title" } }
           assert_redirected_to edit_game_path(games(:one))
-          assert_equal "Game saved!", flash[:success]
+          assert_equal "Game updated!", flash[:success]
           follow_redirect!
           assert_select 'form input[name="game[title]"][value=?]', "Lets Change The Title"
+        end
+      end
+    end
+  end
+
+  describe "#destroy" do
+    describe "when no user is logged in" do
+      test "redirect to login page" do
+        delete game_path(games(:one))
+        assert_redirected_to new_user_session_path
+      end
+    end
+
+    describe "when user is logged in" do
+      setup do
+        sign_in users(:one)
+      end
+
+      describe "when user is a game player" do
+        setup do
+          UserGame.where(game: games(:one), user: users(:one)).destroy_all
+          UserGame.create!(game: games(:one), user: users(:one), role: "player")
+        end
+
+        test "does not archive the game" do
+          assert_no_changes -> { Game.find(games(:one).id).archived_on } do
+            delete game_path(games(:one))
+          end
+        end
+
+        test "does not destroy any UserGame records" do
+          assert_no_difference 'UserGame.count' do
+            delete game_path(games(:one))
+          end
+        end
+
+        test "redirects to the games page" do
+          expected_message = "You are not allowed to modify that game"
+          delete game_path(games(:one))
+          assert_redirected_to games_path
+          assert_equal expected_message, flash[:notice]
+        end
+      end
+
+      describe "when user is a game admin" do
+        test "archives the game" do
+          assert_changes -> { Game.find(games(:one).id).archived_on } do
+            delete game_path(games(:one))
+          end
+        end
+
+        test "cleans up related UserGame records" do
+          assert_difference 'UserGame.count', -games(:one).user_games.size do
+            delete game_path(games(:one))
+          end
+        end
+
+        test "cleans up related Turn records" do
+          assert_difference 'Turn.count', -games(:one).turns.size do
+            delete game_path(games(:one))
+          end
+        end
+
+        test "redirects to the games page" do
+          delete game_path(games(:one))
+          assert_redirected_to games_path
+          assert_equal "Your game has been archived. It will be permanently deleted in 14 days.", flash[:success]
         end
       end
     end

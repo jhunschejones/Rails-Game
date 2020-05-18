@@ -13,7 +13,7 @@
     </div>
 
     <div class="field">
-      <%= f.label :requires_turn_complete_confirmation, "Require players to verify turn is complete" %> <em class="has-text-grey-light">(Multi-machine mode)</em><br />
+      <%= f.label :requires_turn_complete_confirmation, "Require all players to say when the turn has been completed" %> <em class="has-text-grey-light">(Multi-machine mode)</em><br />
       <div class="select">
         <%= f.select :requires_turn_complete_confirmation, [['On', true], ['Off', false]] %>
       </div>
@@ -21,10 +21,31 @@
 
     <%= f.submit "Save", class: "button is-info" %>
   <% end %>
-  <br/>
+  <hr/>
   <div class="actions">
-    <%= link_to "Players", game_users_path(@game), class: "button is-warning" %>
-    <%= link_to "Categories", game_categories_path(@game), class: "button is-warning" %>
-    <%= link_to "Play", game_path(@game), class: "button is-primary", data: { turbolinks: false } %>
+    <%= link_to game_users_path(@game), class: "button is-warning" do %>
+      <span class="icon is-small is-left">
+        <i class="fas fa-users"></i>
+      </span>
+      <span>Players</span>
+    <% end %>
+    <%= link_to game_categories_path(@game), class: "button is-warning" do %>
+      <span class="icon is-small is-left">
+        <i class="fas fa-list"></i>
+      </span>
+      <span>Categories</span>
+    <% end %>
+    <%= link_to game_path(@game), class: "button is-primary", data: { turbolinks: false } do %>
+      <span class="icon is-small is-left">
+        <i class="fas fa-dice"></i>
+      </span>
+      <span>Play</span>
+    <% end %>
   </div>
+
+  <br/><br/>
+  <hr />
+  <h2 id="archive-game" class="title is-5 has-text-danger">Danger Section:<h2>
+  <%= link_to("Archive game", game_path(@game), class: "button is-danger is-outlined is-small", data: { confirm: "Are you sure you want to archive the '#{@game.title}' game? This action is permanent and cannot be undone." }, method: :delete) %>
+  <br/><br/>
 </div>

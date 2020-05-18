@@ -5,7 +5,11 @@ class Game < ApplicationRecord
   has_many :turns
   has_rich_text :description
 
+  after_update :update_game_channel
+
   validates :title, length: { minimum: 2, maximum: 100 }
+
+  scope :active, -> { where(archived_on: nil) }
 
   Selection = Struct.new(:category, :option)
 
@@ -38,6 +42,10 @@ class Game < ApplicationRecord
     users.sort_by { |user| user.order_on(self) }
   end
 
+  def archive
+    self.update!(archived_on: Time.zone.now)
+  end
+
   def play(current_user)
     last_turn_record = last_turn
 
@@ -57,5 +65,14 @@ class Game < ApplicationRecord
 
     this_turn.save!
     last_turn_record&.destroy!
+  end
+
+  private
+
+  def update_game_channel
+    if saved_change_to_requires_turn_complete_confirmation?
+      # Refresh page for all players when game mode changes
+      GameBroadcastJob.perform_later(game_id: id, perform_simple_refresh: true)
+    end
   end
 end

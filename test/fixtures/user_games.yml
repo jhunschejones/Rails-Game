@@ -4,14 +4,17 @@ one:
   user: one
   game: one
   role: admin
+  order: 1
 
 two:
   user: two
   game: one
   role: player
+  order: 2
 
 three:
   user: two
   game: two
   role: admin
+  order: 1
 

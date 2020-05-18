@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   resources :users, only: [:show]
 
   get '/games/:id/play', to: 'games#play', as: :play_game
-  resources :games, except: [:delete, :destroy] do
+  resources :games, except: [:delete] do
     resources :users, only: [:index]
     resources :user_games, only: [:edit, :update]
     post '/confirm_action_completed', to: 'user_games#confirm_action_completed', as: :confirm_action_completed
