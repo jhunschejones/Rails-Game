@@ -1,2 +1,9 @@
 var user = document.querySelector(".user_<%= @user_game.user_id %>");
-user.parentNode.removeChild(user);
+var userGame = document.querySelector(".user_game_<%= @user_game.id %>");
+if (user) {
+  user.parentNode.removeChild(user);
+}
+
+if (userGame) {
+  userGame.parentNode.removeChild(userGame);
+}

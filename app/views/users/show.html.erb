@@ -1,5 +1,5 @@
 <div class="user-details">
-  <h1 class="title is-4 user-title">My account</h1>
+  <h2 class="title is-4 user-title">My account</h1>
   <p>
     <span class="icon is-small is-left">
       <i class="fas fa-hand-peace"></i>
@@ -22,5 +22,15 @@
     <%= @user.created_at.strftime("%B %d, %Y") %>
   </p>
   <br/>
-  <%= link_to("Edit", edit_user_registration_path(), class: "button is-info") %>
+  <%= link_to("Edit", edit_user_registration_path, class: "button is-info") %>
+
+  <% if @user_games.size > 0 %>
+    <br/><br/><br/>
+    <hr/>
+    <h2 id="quit-game" class="title is-5">Quit a game:</h1>
+    <ul class="user-games">
+      <%= render(@user_games) %>
+    </ul>
+    <br/><br/>
+  <% end %>
 </div>

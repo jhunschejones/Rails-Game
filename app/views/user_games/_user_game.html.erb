@@ -1,0 +1,9 @@
+<li class="user_game user_game_<%= user_game.id %>">
+  <%= link_to(user_game.game.title, game_path(user_game.game), class: "has-text-info", data: { turbolinks: false }) %>
+  <% if current_user.is_game_admin?(user_game.game_id) %>
+    <small class="has-text-grey-light">(admin)</small>
+  <% end %>
+
+  <strong class="resource-action-divider has-text-info">|</strong>
+  <%= link_to("Quit", game_remove_user_path(user_game.game, user_game.user), method: :delete, remote: :true, class: "has-text-info", data: { confirm: "Are you sure you want to leave the '#{user_game.game.title}' game? This action is permanent and will re-start the game for the other players." }) %>
+</li>

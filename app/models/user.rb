@@ -38,7 +38,11 @@ class User < ApplicationRecord
   end
 
   def can_create_games?
-    site_role == SITE_ADMIN
+    user_games.size < UserGame::MAX_USER_GAMES
+  end
+
+  def is_last_admin_on?(game)
+    is_game_admin?(game.id) && game.user_games.map(&:role).select { |role| role == UserGame::GAME_ADMIN }.size == 1
   end
 
   # Used for displaying "admin" label only, never directly for access control
