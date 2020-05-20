@@ -10,23 +10,28 @@ class UserGamesController < ApplicationController
 
   # PATCH /games/:game_id/user_games/:id
   def update
-    user_game = UserGame.find(params[:id])
-    user_game.update!(order: params[:user_game][:order])
+    user_game = UserGame.includes(:user).find(params[:id])
+    user_game.update!(
+      current_user == user_game.user ? user_game_params.except(:role) : user_game_params
+    )
     redirect_to game_users_path(@game)
   end
 
   # POST /games/:game_id/confirm_action_completed
   def confirm_action_completed
-    user_game = UserGame.includes(game: [:turns]).where(user: current_user, game: @game).first
-    turn = user_game.game.last_turn
+    turn = @game.last_turn
     turn.confirmed_by << current_user.id
     turn.save!
-    head :ok, content_type: "text/javascript"
+    head :ok, content_type: "text/javascript; charset=utf-8"
   end
 
   private
 
   def set_game
-    @game = Game.includes(:turns, users: [:user_games]).find(params[:game_id])
+    @game = Game.active.includes(:turns, users: [:user_games]).find(params[:game_id])
+  end
+
+  def user_game_params
+    params.require(:user_game).permit(:order, :role)
   end
 end
