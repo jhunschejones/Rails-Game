@@ -8,12 +8,12 @@
     "@rails/activestorage": "^6.0.0",
     "@rails/ujs": "^6.0.0",
     "@rails/webpacker": "^5.0.1",
+    "@types/webpack-env": "^1.15.2",
     "prop-types": "^15.7.2",
     "trix": "^1.2.0",
     "ts-loader": "^7.0.3",
     "turbolinks": "^5.2.0",
-    "typescript": "^3.8.3",
-    "@types/webpack-env": "^1.15.2"
+    "typescript": "^3.8.3"
   },
   "version": "0.1.0",
   "devDependencies": {
