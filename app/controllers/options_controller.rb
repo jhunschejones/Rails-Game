@@ -4,24 +4,28 @@ class OptionsController < ApplicationController
   before_action :set_game_and_category
 
   def create
-    @option = Option.create!(options_params.merge({category_id: @category.id}))
-    Turn.where(game: @game).destroy_all
-    respond_to(&:js)
+    ActiveRecord::Base.transaction do
+      @option = Option.create!(options_params.merge({category_id: @category.id}))
+      Turn.where(game: @game).destroy_all
+    end
+    respond_to { |format| format.js { render :create, status: 201 } }
   rescue ActiveRecord::RecordInvalid => e
     redirect_to edit_game_category_path(@game, @category), notice: e.message.split(": ")[1]
   end
 
   def destroy
-    @option = Option.find(params[:id])
-    @option.destroy!
-    Turn.where(game: @game).destroy_all
+    ActiveRecord::Base.transaction do
+      @option = Option.find(params[:id])
+      @option.destroy!
+      Turn.where(game: @game).destroy_all
+    end
     respond_to(&:js)
   end
 
   private
 
   def set_game_and_category
-    @game = Game.find(params[:game_id])
+    @game = Game.active.find(params[:game_id])
     @category = Category.find(params[:category_id])
   end
 
