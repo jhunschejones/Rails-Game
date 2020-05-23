@@ -21,7 +21,7 @@ class CategoriesController < ApplicationController
       Category.create!(categories_params.merge({game_id: @game.id, order: order}))
       @game.reload
       Turn.where(game: @game).destroy_all
-      respond_to(&:js)
+      respond_to { |format| format.js { render :create, status: 201 } }
     end
   rescue ActiveRecord::RecordInvalid => e
     redirect_to game_categories_path(@game), notice: e.message.split(": ")[1]
@@ -52,7 +52,7 @@ class CategoriesController < ApplicationController
   end
 
   def set_game
-    @game = Game.includes(categories: [:options]).find(params[:game_id])
+    @game = Game.active.includes(categories: [:options]).find(params[:game_id])
   end
 
   def categories_params
