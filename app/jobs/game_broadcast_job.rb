@@ -2,7 +2,7 @@ class GameBroadcastJob < ApplicationJob
   queue_as :default
 
   def perform(game_id:, perform_simple_refresh: false)
-    @game = Game.active.includes(:turns).where(id: game_id).first
+    @game = Game.active.includes(turns: [selected_options: [option: [:category]]]).where(id: game_id).first
     return unless @game
 
     if @game.requires_turn_complete_confirmation? || perform_simple_refresh
