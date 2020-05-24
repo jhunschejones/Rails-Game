@@ -8,6 +8,11 @@ class UserGame < ApplicationRecord
   GAME_PLAYER = "player".freeze
   GAME_ADMIN = "admin".freeze
   USER_GAME_ROLES = [GAME_PLAYER, GAME_ADMIN].freeze
+  MAX_USER_GAMES = 10.freeze
+
+  def just_created?
+    saved_change_to_attribute?(:id)
+  end
 
   private
 

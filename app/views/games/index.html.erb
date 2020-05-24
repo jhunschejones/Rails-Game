@@ -1,7 +1,7 @@
 <div class="all-games-container">
   <ul><%= render(@games) %></ul>
   <br/>
-  <% if current_user.can_create_games? %>
-    <%= link_to("New game", new_game_path, class: "button is-warning footer-item") %>
-  <% end %>
+  <%= link_to("New game", new_game_path, class: "button is-info footer-item") %>
+  <%= link_to("Quit game", user_path(current_user, anchor: "quit-game"), class: "button is-danger is-outlined footer-item") %>
+  <br/><br/>
 </div>
