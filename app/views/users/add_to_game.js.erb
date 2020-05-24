@@ -1,4 +1,4 @@
-<% if @user_game.try(:valid?) %>
+<% if @user_game.try(:valid?) && @user_game.just_created? %>
   document.querySelector(".users").insertAdjacentHTML("beforeend", "<%= escape_javascript(render @user, locals: { game: @game }) %>");
   document.getElementsByName("user[name]")[0].value = "";
   document.getElementsByName("user[email]")[0].value = "";
