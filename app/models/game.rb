@@ -11,8 +11,6 @@ class Game < ApplicationRecord
 
   scope :active, -> { where(archived_on: nil) }
 
-  Selection = Struct.new(:category, :option)
-
   def ready_to_play?
     categories.size > 0 && has_enough_options?
   end
@@ -39,7 +37,7 @@ class Game < ApplicationRecord
   end
 
   def ordered_players
-    users.sort_by { |user| user.order_on(self) }
+    users.sort_by { |user| user.player_order(id) }
   end
 
   def archive

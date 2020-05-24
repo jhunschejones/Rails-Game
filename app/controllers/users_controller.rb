@@ -51,7 +51,7 @@ class UsersController < ApplicationController
 
     return redirect_to game_users_path(@game), notice: "That player is not in this game yet" unless @user_game
 
-    if @user_game.user == current_user && current_user.is_last_admin_on?(@game)
+    if @user_game.user == current_user && current_user.is_last_admin?(@game)
       return redirect_to edit_game_path(@game), notice: "You are the last admin in this game. You will either need to archive the game or assign another admin before quitting."
     end
 

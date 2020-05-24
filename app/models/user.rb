@@ -17,20 +17,20 @@ class User < ApplicationRecord
   SITE_ADMIN = "admin".freeze
   USER_SITE_ROLES = [SITE_USER, SITE_ADMIN].freeze
 
-  def has_confirmed(turn)
+  def has_confirmed?(turn)
     turn.confirmed_by.include?(id)
   end
 
-  def user_game_for(game)
-    UserGame.where(game: game, user: self).first
+  def user_game_for(game_id)
+    user_games.find { |user_game| user_game.game_id.to_s == game_id.to_s }
   end
 
-  def order_on(game)
-    user_game_for(game).order || 0
+  def player_order(game_id)
+    user_game_for(game_id).order || 0
   end
 
   def can_access_game?(game_id)
-    UserGame.where(user_id: id, game_id: game_id).exists?
+    user_game_for(game_id).present?
   end
 
   def can_edit_game?(game_id)
@@ -41,13 +41,15 @@ class User < ApplicationRecord
     user_games.size < UserGame::MAX_USER_GAMES
   end
 
-  def is_last_admin_on?(game)
-    is_game_admin?(game.id) && game.user_games.map(&:role).select { |role| role == UserGame::GAME_ADMIN }.size == 1
+  def is_last_admin?(game)
+    is_game_admin?(game.id) &&
+      game.user_games.map(&:role).select { |role| role == UserGame::GAME_ADMIN }.size == 1
   end
 
   # Used for displaying "admin" label only, never directly for access control
   def is_game_admin?(game_id)
-    UserGame.where(user_id: id, game_id: game_id, role: UserGame::GAME_ADMIN).exists?
+    user_games.find { |user_game| user_game.game_id.to_s == game_id.to_s &&
+                                  user_game.role == UserGame::GAME_ADMIN }.present?
   end
 
   # --- LIBRARY OVERRIDES FOR SECURITY ---
