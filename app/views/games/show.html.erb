@@ -1,9 +1,16 @@
 <div class="game-container">
   <h1 class="title is-3"><%= @game.title %></h1>
-  <p class="game-description"><%= @game.description %></p>
-  <% if current_user.can_edit_game?(@game.id) %>
+  <% if @game.description.present? %>
+    <p class="game-description"><%= @game.description %></p>
     <br/>
-    <%= link_to("Edit game", edit_game_path(@game), class: "button is-warning is-small footer-item") %>
+  <% end %>
+  <% if current_user.can_edit_game?(@game.id) %>
+    <%= link_to(edit_game_path(@game), class: "button is-warning is-small footer-item edit-game-button") do %>
+      <span class="icon is-small is-left">
+        <i class="far fa-edit"></i>
+      </span>
+      <span>Edit</span>
+    <% end %>
     <br/>
   <% end %>
   <br/>
@@ -41,7 +48,12 @@
     <% if @game.requires_turn_complete_confirmation? %>
       <%= render(template: 'games/_game_footer_buttons', locals: { this_turn: @this_turn, game: @game }) %>
     <% else %>
-      <%= link_to("Go!", play_game_path(@game), class: "button is-primary footer-item", remote: true) %>
+      <%= link_to(play_game_path(@game), class: "button is-primary footer-item", remote: true) do %>
+        <span class="icon is-small is-left">
+          <i class="fas fa-dice"></i>
+        </span>
+        <span>Go!</span>
+      <% end %>
     <% end %>
   </div>
 </div>

@@ -36,14 +36,14 @@
           <div class="navbar-item">
             <div class="buttons">
               <% if user_signed_in? %>
-                <%= link_to(destroy_user_session_path, method: :delete, class: "button is-danger") do %>
+                <%= link_to(destroy_user_session_path, method: :delete, class: "button is-danger is-small") do %>
                   <strong>Log out</strong>
                 <% end %>
               <% else %>
-                <%= link_to(new_user_registration_path, class: "button is-info") do %>
+                <%= link_to(new_user_registration_path, class: "button is-info is-small") do %>
                   <strong>Sign up</strong>
                 <% end %>
-                <%= link_to(new_user_session_path, class: "button is-light") do %>
+                <%= link_to(new_user_session_path, class: "button is-light is-small") do %>
                   <strong>Log in</strong>
                 <% end %>
               <% end %>

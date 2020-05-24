@@ -33,8 +33,13 @@
   <p><em class="has-text-grey-light">(500 characters max)</em></p>
   <br/><br/>
   <div class="actions">
-    <%= link_to "Back", game_categories_path(@game), class: "button is-dark" %>
-    <%= link_to "Play", game_path(@game), class: "button is-primary", data: { turbolinks: false } %>
+    <%= link_to "Back", game_categories_path(@game), class: "button is-light" %>
+    <%= link_to game_path(@game), class: "button is-primary", data: { turbolinks: false } do %>
+      <span class="icon is-small is-left">
+        <i class="fas fa-dice"></i>
+      </span>
+      <span>Play</span>
+    <% end %>
   </div>
 </div>
 
