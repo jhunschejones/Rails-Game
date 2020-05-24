@@ -1,9 +1,9 @@
 <li class="user user_<%= user.id %>">
-  <span class="resource-order has-text-grey-light"><%= sprintf('%02d', user.order_on(@game) ) %>&colon;</span>
+  <span class="resource-order has-text-grey-light"><%= sprintf('%02d', user.player_order(@game.id) ) %>&colon;</span>
   <span>
     <%= user.name %>
     <% if user.is_game_admin?(@game.id) %>
-      (admin)
+      <span class="has-text-grey-light">(admin)</span>
     <% end %>
   </span>
   <% if user.id == current_user.id %>
@@ -15,7 +15,7 @@
   <% end %>
 
   <strong class="resource-action-divider has-text-link">|</strong>
-  <%= link_to("Change Order", edit_game_user_game_path(@game, user.user_game_for(@game)), class: "has-text-link") %>
+  <%= link_to("Edit", edit_game_user_game_path(@game, user.user_game_for(@game.id)), class: "has-text-link") %>
   <% if user.id != current_user.id %>
     <strong class="resource-action-divider has-text-link">|</strong>
     <%= link_to("Delete", game_remove_user_path(@game, user), method: :delete, remote: :true, class: "has-text-link", data: { confirm: "Are you sure you want to remove '#{user.name}' from this game? This action is permanent and will re-start your game." }) %>
