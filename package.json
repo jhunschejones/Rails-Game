@@ -7,7 +7,7 @@
     "@rails/actiontext": "^6.0.3",
     "@rails/activestorage": "^6.0.0",
     "@rails/ujs": "^6.0.0",
-    "@rails/webpacker": "^5.0.1",
+    "@rails/webpacker": "^5.2.1",
     "@types/webpack-env": "^1.15.2",
     "prop-types": "^15.7.2",
     "trix": "^1.2.0",
